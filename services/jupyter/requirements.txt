@@ -1,5 +1,6 @@
 jupyter
 ipykernel
 matplotlib
-dataset
+requests
 pyodbc
+dataset

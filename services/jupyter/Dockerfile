@@ -7,8 +7,17 @@ WORKDIR /notebooks
 # Instalar dependências básicas (python, pip e outras dependências)
 RUN apt-get update && apt-get install -y python3-pip python3-dev curl
 
-# Instalar dependências usadas pelo torchvision
-# RUN apt-get install libjpeg-dev zlib1g-dev libpython3-dev
+#Necessario para o conector do SQL Server
+RUN apt update && apt install -y unixodbc
+
+# Copia script de instalação do driver
+COPY driver.sh /usr/local/bin/driver.sh
+
+# Entrypoint
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Permissões nos arquivos
+RUN chmod +x /usr/local/bin/driver.sh /usr/local/bin/entrypoint.sh
 
 # Update pip
 RUN pip3 install --upgrade pip 
@@ -25,5 +34,5 @@ RUN uv pip install --system -r requirements.txt
 # Expor a porta do Jupyter Notebook
 EXPOSE 8000
 
-# Comando para rodar o Jupyter Notebook
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8000", "--no-browser", "--allow-root"]
+# Run the script when the container starts
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

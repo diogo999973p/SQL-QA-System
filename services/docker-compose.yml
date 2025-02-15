@@ -15,9 +15,9 @@ services:
     networks:
       - app-network
 
-
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
     environment:
       SA_PASSWORD: "SqlServer2019!"
       ACCEPT_EULA: "Y"
@@ -26,15 +26,20 @@ services:
       - "1433:1433"
     networks:
       - app-network
+
   mssqltools:
     image: mcr.microsoft.com/mssql-tools
+    container_name: mssqltools
     depends_on:
       - sqlserver
     volumes:
       - ./bike_stores/create_objects.sql:/tmp/create_objects.sql
       - ./bike_stores/load_data.sql:/tmp/load_data.sql
       - ./bike_stores/init_database.sh:/tmp/init_database.sh
-    command: /bin/bash ./tmp/init_database.sh
+    networks:
+      - app-network
+    #command: /bin/bash ./tmp/init_database.sh
+
 
 networks:
   app-network:
