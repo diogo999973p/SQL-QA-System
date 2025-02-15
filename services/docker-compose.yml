@@ -1,0 +1,41 @@
+services:
+  jupyter:
+    build:
+      context: ./jupyter  # Caminho onde estará o Dockerfile e o requirements.txt do Jupyter
+    container_name: jupyter
+    ports:
+      - "8000:8000"  # Porta para acessar o Jupyter Notebook
+    volumes:
+      - ./jupyter_data:/notebooks  # Diretório onde os notebooks estarão localizados
+      - ./mlflow_data:/mlflow
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}  # Token para acessar o Jupyter Notebook
+      - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/artifacts
+    working_dir: /notebooks
+    networks:
+      - app-network
+
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "SqlServer2019!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+  mssqltools:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./bike_stores/create_objects.sql:/tmp/create_objects.sql
+      - ./bike_stores/load_data.sql:/tmp/load_data.sql
+      - ./bike_stores/init_database.sh:/tmp/init_database.sh
+    command: /bin/bash ./tmp/init_database.sh
+
+networks:
+  app-network:
+    driver: bridge
