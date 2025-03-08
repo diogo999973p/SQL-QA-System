@@ -41,6 +41,21 @@ services:
       - app-network
     #command: /bin/bash ./tmp/init_database.sh
 
+  flask:
+    build:
+      context: ./flask
+    container_name: flask
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./flask:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    networks:
+      - app-network
+
 
 networks:
   app-network:

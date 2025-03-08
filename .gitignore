@@ -4,3 +4,4 @@ answers.txt
 commands.txt
 rag.txt
 .env
+__pycache__

@@ -1,0 +1,7 @@
+Flask==2.3.2
+requests
+jupyter
+matplotlib
+pyodbc
+dataset
+openai
