@@ -12,14 +12,18 @@ class Model:
         )
 
 
-    def generate_text(self, instruction, prompt):
+    def generate_text(self, first_instruction, second_instruction, prompt):
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=[
                     {
                         "role": "developer",
-                        "content": instruction
+                        "content": first_instruction
+                    },
+                    {
+                        "role": "developer",
+                        "content": second_instruction
                     },
                     {
                         "role": "user",
