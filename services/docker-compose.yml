@@ -1,3 +1,4 @@
+name: SqlAgent
 services:
   jupyter:
     build:
@@ -39,7 +40,7 @@ services:
       - ./bike_stores/init_database.sh:/tmp/init_database.sh
     networks:
       - app-network
-    #command: /bin/bash ./tmp/init_database.sh
+    command: /bin/bash ./tmp/init_database.sh
 
   flask:
     build:

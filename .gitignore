@@ -2,6 +2,7 @@
 secrets.txt
 answers.txt
 commands.txt
+prompts.txt
 rag.txt
 .env
 __pycache__

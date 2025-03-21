@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Docker App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Question to SQL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Hello from Flask in Docker!!!!!!!!!</h1>
-    <p>This is a simple Flask app running in Docker Compose.</p>
-    <p>Hello Diogo!</p>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <div class="container">
+        <h1>Ask a Question</h1>
+        <textarea id="question-input" placeholder="Enter your question here..."></textarea>
+        <button id="ask-button">Ask</button>
+
+        <div class="response">
+            <h2>Generated SQL Query:</h2>
+            <pre id="sql-query"></pre>
+
+            <h2>Answer:</h2>
+            <p id="answer"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
