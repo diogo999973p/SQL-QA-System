@@ -49,10 +49,10 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./flask:/app
+      - ./flask/app:/app
     environment:
       - FLASK_ENV=development
-      - FLASK_APP=app
+      - FLASK_APP=app.py
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
     networks:
       - app-network
