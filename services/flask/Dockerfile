@@ -1,14 +1,23 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Usar uma imagem oficial do Ubuntu
+FROM ubuntu:20.04
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Instalar dependências básicas
-RUN apt-get update && apt-get install -y curl
+# Instalar dependências básicas (python, pip e outras dependências)
+RUN apt-get update && apt-get install -y python3-pip python3-dev curl
 
 #Necessario para o conector do SQL Server
 RUN apt update && apt install -y unixodbc
+
+# Entrypoint
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Copia script de instalação do driver
+COPY driver.sh /usr/local/bin/driver.sh
+
+# Permissões nos arquivos
+RUN chmod +x /usr/local/bin/driver.sh /usr/local/bin/entrypoint.sh
 
 # Copy the requirements file into the container
 COPY requirements.txt .
@@ -29,5 +38,5 @@ EXPOSE 5000
 ENV FLASK_APP=app
 ENV FLASK_ENV=development
 
-# Run the Flask app
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Run the script when the container starts
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
