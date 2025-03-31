@@ -41,9 +41,35 @@ def get_query_from_model(question):
     except Exception as e:
         return e
 
-def generate_answer(question):
+def get_query_results_from_database(queries):
     # Replace this with actual logic to generate answers
-    return f"This is the answer to your question: '{question}'."
+    database_responses = []
+
+    db = get_db()
+
+    for query in queries:
+        database_response = db.execute_query(query)
+        
+        response_rows = []
+
+        for row in database_response:
+            response_rows.append(row)
+
+        database_responses.append(response_rows)
+    return database_responses
+
+def generate_answer(question, database_responses):
+    second_step_instruction = f"""
+        Considerer this question: {question} and this database data {database_responses} and answer the question.
+        Separate your response if there are multiple questions or answers.
+    """
+    ##    Formatt your response in HTML code, the tags used will be inside a p
+
+    try:
+        response_text = model_client.generate_text(first_instruction=model.DATABASE_DESCRIPTION, second_instruction=second_step_instruction, prompt=question)
+        return response_text
+    except Exception as e:
+        return e
 
 @app.route('/')
 def index():
@@ -53,15 +79,10 @@ def index():
 def ask():
     data = request.json
     question = data.get('question')
-    #question = None
-    #print(f'DATA:{data}',file=sys.stderr)
-    #print(f'QUESTION:{question}',file=sys.stderr)
 
     if not question:
         return jsonify({'error': 'No question provided'}), 400
     
-    #return jsonify({'error': f'question:{question}'}), 400
-
     model_queries_answer = get_query_from_model(question)
     
     sql_queries = model_answers_parser.get_queries_from_model_answer(model_queries_answer)
@@ -69,28 +90,18 @@ def ask():
     formatted_sql_queries = [sqlparse.format(query, reindent=True, keyword_case='upper') for query in sql_queries]
 
     queries_text = '\n\n'.join(formatted_sql_queries)
-    
-    #.get_data(as_text=True)
-    # return jsonify({'error': f'sql_query:{queries}'}), 400
 
-    # sql_query:{'error': "generate_text() got an unexpected keyword argument 'firs_instruction'"}
-    
-    # sql_query:(<Response 82 bytes [200 OK]>, 500)
+    database_responses = get_query_results_from_database(sql_queries)
 
+    if not database_responses:
+        return jsonify({'error': 'No answer from database'}), 400
 
-    ##print(sqlparse.format(first, reindent=True, keyword_case='upper'))
-    
-    answer = generate_answer(question)
-
-
+    answer = generate_answer(question, database_responses)
 
     response_data = jsonify({
         'sql_query': queries_text,
         'answer': answer
     })
-
-    # print(f"response_data:{response_data}") 
-    # print(f"response_type:{type(response_data)}") 
 
     return response_data
 
