@@ -4,5 +4,6 @@ answers.txt
 commands.txt
 prompts.txt
 rag.txt
+anotacoes.txt
 .env
 __pycache__

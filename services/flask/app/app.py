@@ -62,9 +62,10 @@ def generate_answer(question, database_responses):
     second_step_instruction = f"""
         Considerer this question: {question} and this database data {database_responses} and answer the question.
         Separate your response if there are multiple questions or answers.
+        Do not show the database data on the answer.
+        Formatt your response in HTML code, but use only tags that are normaly used inside the body tag, do not use html or body tags.
     """
-    ##    Formatt your response in HTML code, the tags used will be inside a p
-
+    ##    
     try:
         response_text = model_client.generate_text(first_instruction=model.DATABASE_DESCRIPTION, second_instruction=second_step_instruction, prompt=question)
         return response_text

@@ -58,7 +58,8 @@ class Model:
                         "role": "user",
                         "content": prompt
                     }
-                ]
+                ],
+                temperature = 0.0
             )
 
             return response.choices[0].message.content.strip()

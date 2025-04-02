@@ -28,7 +28,7 @@ document.getElementById('ask-button').addEventListener('click', function () {
             return;
         }
 
-        //formatted_answer = data.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // formatted_answer = data.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
         document.getElementById('sql-query').textContent = data.sql_query;
         document.getElementById('answer').innerHTML = data.answer;
