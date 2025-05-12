@@ -22,7 +22,7 @@ No último passo o modelo irá, a partir da pergunta inicial e do retorno do res
 
 Um fluxo pode ser visto na imagem:
 
-![](fluxo_sistema.png)
+![fluxo](fluxo_sistema.png)
 
 ### Stack
 
@@ -62,7 +62,7 @@ A base de dados escolhida foi uma com dados de uma loja de bicicletas denominada
 
 Na seguinte imagem é possível ver as tabelas presentes nesse banco de dados:
 
-![](database.png)
+![banco](database.png)
 
 Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criar um prompt que está localizado no arquivo services/flas/app/model.py.
 
