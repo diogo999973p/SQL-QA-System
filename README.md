@@ -1,4 +1,4 @@
-# Agente de SQL
+# SQL Agent
 
 Esse repositório contém o código de um agente de SQL que se conecta a um banco de dados e responde perguntas de usuários sobre uma base dados relacional através do input em uma interface gráfica web.
 
