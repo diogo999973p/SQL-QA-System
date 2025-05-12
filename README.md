@@ -54,7 +54,17 @@ Os serviços criados e suas utilizações foram:
 1. Jupyter: serviço usado para subir em localhost jupyter notebooks com as bibliotecas necessárias instaladas. Esse serviço foi utilizado apenas para testes.
 2. Sqlserver: serviço do banco de dados SQL Server em localhost.
 3. Mssqltools: serviço temporário para criação da base de dado no SQL Server.
-4. Flask: serviço com o sistema completo em funcionamento.
+4. Flask: serviço principal que integra os sistemas anteriores. Possuindo uma interface gráfica e um servidor em localhost.
+
+### Base de Dados
+
+A base de dados escolhida foi uma com dados de uma loja de bicicletas denominada "bikeStores".
+
+Na seguinte imagem é possível ver as tabelas presentes nesse banco de dados:
+
+![](database.png)
+
+Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criar um prompt que está localizado no arquivo services/flas/app/model.py.
 
 ### Testes Efetuados
 
@@ -68,3 +78,16 @@ Foram construídas duas classes principais: a Database, para conectar e executar
 
 ## Resultados
 
+A avaliação do sistema se baseou em testes do funcionamento completo do sistema, isto é, a inserção da pergunta pelo usuário, a geração das queries (podendo ser mais de uma) pelo modelo, a conexão com o banco e a execução dessas queries, e por fim, o recebimento pelo LLM da pergunta inicial e da resposta do banco, gerando a resposta final.
+
+O arquivo questions_and_answers.txt, contém os testes efetuados e as análises dos resultados.
+
+O único erro cometido pelo modelo foi pelo fato da base de dados possuir uma tabela de produtos com produtos de diferentes ids, mas com mesmo nome. Dessa forma, agrupar pelo ID gera um resultado diferente de agrupar pelo nome.
+
+O agrupamento do modelo pelo ID não necessáriamente é uma falha do modelo, podendo indicar uma falha da construção da própria base de dados. Porém, caso o modelo tivesse conhecimento disso, através de uma query SELECT, ele poderia ter gerado o resultado correto.
+
+Uma possível correção seria uma avaliação completa do modelo de todo o banco de dados, antes dele receber qualquer pergunta. Isto é, o modelo poderia gerar queries automáticas de avaliação para gerar um conhecimento das especificidades das informações do banco de dados. Porém, essa avaliação seria muito complicada para o caso de base de dados muito grandes, com milhões de linhas, e talvez pequenas amostras não evidenciassem os importantes detalhes das informações. 
+
+Uma solução para esse problema seria a geração de um prompt para explicar os detalhes da base e qualquer informações que vá ajudar o modelo a chegar na resposta correta.
+
+## Conclusão
