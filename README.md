@@ -64,7 +64,7 @@ Na seguinte imagem é possível ver as tabelas presentes nesse banco de dados:
 
 ![Banco](database.png)
 
-Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criar um prompt que está localizado no arquivo services/flas/app/model.py.
+Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criado um prompt que está localizado no arquivo services/flas/app/model.py.
 
 ### Testes Efetuados
 
