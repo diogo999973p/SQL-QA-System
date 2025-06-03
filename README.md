@@ -1,8 +1,8 @@
-# Agente de SQL
+# Sistema SQL de Perguntas e Respostas
 
-Esse repositório contém o código de um agente de SQL que se conecta a um banco de dados e responde perguntas de usuários sobre uma base dados relacional através do input em uma interface gráfica web.
+Esse repositório contém o código de um sistema de perguntas e respostas SQL, que se conecta a um banco de dados e responde perguntas de usuários sobre uma base dados relacional através do input em uma interface gráfica web.
 
-TODO colocar imagem de um resultado do sistema.
+![Interface 2](interface_grafica_2.png)
 
 ## Projeto
 
@@ -66,6 +66,12 @@ Na seguinte imagem é possível ver as tabelas presentes nesse banco de dados:
 
 Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criado um prompt que está localizado no arquivo services/flas/app/model.py.
 
+## Interface Gráfica
+
+A interface gráfica em localhost pode ser vista na seguinte figura:
+
+![Interface 1](interface_grafica_1.png)
+
 ### Testes Efetuados
 
 Na pasta jupyter_data, estão os notebooks utilizados para construir e testar as funcionalidades do sistema.
@@ -80,7 +86,16 @@ Foram construídas duas classes principais: a Database, para conectar e executar
 
 A avaliação do sistema se baseou em testes do funcionamento completo do sistema, isto é, a inserção da pergunta pelo usuário, a geração das queries (podendo ser mais de uma) pelo modelo, a conexão com o banco e a execução dessas queries, e por fim, o recebimento pelo LLM da pergunta inicial e da resposta do banco, gerando a resposta final.
 
-O arquivo questions_and_answers.txt, contém os testes efetuados e as análises dos resultados.
+O arquivo questions_and_answers.txt, contém os testes efetuados e as análises dos resultados. 
+
+Abaixo está uma com entradas e saídas do modelo:
+
+| **Question** | **SQL** | **Answer** |
+|--------------|---------|------------|
+| **What are the top 3 products in stock quantity?** | ```SELECT TOP 3    p.product_name,    SUM(s.quantity) AS total_quantity FROM     production.stocks s INNER JOIN     production.products p     ON s.product_id = p.product_id GROUP BY     p.product_name ORDER BY     total_quantity DESC;``` | - Electra Townie Original 7D - 2017 (125 units in stock)- Electra Townie Balloon 8D EQ Ladies' - 2016/2017/2018 (121 units in stock)- Electra Townie Go! 8i - 2017/2018 (120 units in stock) |
+| **What are the top 3 products in sales quantity?** | ```SELECT    TOP 3 p.product_name,    SUM(oi.quantity) AS total_quantity FROM    sales.order_items oi JOIN production.products p ON    oi.product_id = p.product_idGROUP BY    p.product_id,    p.product_name ORDER BY    total_quantity DESC;``` | - Surly Ice Cream Truck Frameset - 2016- Electra Cruiser 1 (24-Inch) - 2016- Electra Townie Original 7D EQ - 2016 |
+| **What were the staffs with the highest number of sales in August of 2017 and what is the number of products that it sold at this month?** | ```SELECT    TOP 1 WITH TIES s.staff_id,    s.first_name,    s.last_name,    SUM(oi.quantity) AS total_products_sold FROM    sales.staffs s JOIN sales.orders o ON    s.staff_id = o.staff_id JOIN sales.order_items oi ON    o.order_id = oi.order_id WHERE    o.order_date >= '20170801'    AND o.order_date < '20170901' GROUP BY    s.staff_id,    s.first_name,    s.last_nameORDER BY    total_products_sold DESC;``` | In August 2017, the staff with the highest number of sales was: Marcelene Boyer, who sold 91 products during that month. |
+
 
 O único erro cometido pelo modelo foi pelo fato da base de dados possuir uma tabela de produtos com produtos de diferentes ids, mas com mesmo nome. Dessa forma, agrupar pelo ID gera um resultado diferente de agrupar pelo nome.
 
@@ -91,3 +106,11 @@ Uma possível correção seria uma avaliação completa do modelo de todo o banc
 Uma solução para esse problema seria a geração de um prompt para explicar os detalhes da base e qualquer informações que vá ajudar o modelo a chegar na resposta correta.
 
 ## Conclusão
+
+O sistema construído apresentou um excelente desempenho, surpreendendo na precisão das respostas fornecidas. Houve apenas uma resposta que causou dúvidas, devido ao fato da própria base de dados apresentar uma inconsistência, conforme o explicado na seção de resultados.
+
+Adicionando, esse projeto utilizou uma base de dados com a tecnologia do SQL Server, porém, pode ser adaptado para outros dialetos SQL, como por exemplo, MySQL e Postgres. Além disso, vale mencionar, que o modelo tomou conhecimento das tabelas, campos e relacionamentos através de um prompt, ou seja, ao modelo foi fornecido um contexto e ele o utilizou para gerar as consultas em SQL. Base de dados muito grandes e complexas podem necessitar de outras técnicas e o RAG pode ser empregado para que não seja necessário previamente um processamento de tokens extenso, evitando romper o limite de contexto do modelo LLM utilizado.
+
+Um outro ponto importante fato a ser citado, é que a utilização do OpenRouter (plataforma que disponibiliza API para diversos modelos) permitiu a utilização de um modelo de ponta de forma gratuita, porém ao mesmo tempo, o tempo de resposta do modelo foi alto, podendo demorar mais de 1 minuto para gerar as respostas necessárias.
+
+O projeto demonstra o poder dos LLMs, pois mesmo pessoas que não conhecem SQL podem extrair insights dos dados de um banco SQL, sem necessariamente precisar saber sobre essa linguagem de script.
