@@ -88,7 +88,7 @@ A avaliação do sistema se baseou em testes do funcionamento completo do sistem
 
 O arquivo questions_and_answers.txt, contém os testes efetuados e as análises dos resultados. 
 
-Abaixo está uma com entradas e saídas do modelo:
+Abaixo está uma tabela com entradas e saídas do modelo:
 
 | **Question** | **SQL** | **Answer** |
 |--------------|---------|------------|
