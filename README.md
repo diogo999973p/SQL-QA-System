@@ -90,7 +90,7 @@ O arquivo questions_and_answers.txt, contém os testes efetuados e as análises 
 
 Abaixo está uma tabela com entradas e saídas do modelo:
 
-| **Question** | **Generated SQL** | **Final Generated Answer** |
+| **Question** | **Generated SQL** | **Generated Answer** |
 |--------------|---------|------------|
 | **What are the top 3 products in stock quantity?** | ```SELECT TOP 3 p.product_name, SUM(s.quantity) AS total_quantity FROM production.stocks s INNER JOIN production.products p ON s.product_id = p.product_id GROUP BY p.product_name ORDER BY total_quantity DESC;``` | - Electra Townie Original 7D - 2017 (125 units in stock)<br> - Electra Townie Balloon 8D EQ Ladies' - 2016/2017/2018 (121 units in stock)<br> - Electra Townie Go! 8i - 2017/2018 (120 units in stock) |
 | **What are the top 3 products in sales quantity?** | ```SELECT TOP 3 p.product_name, SUM(oi.quantity) AS total_quantity FROM sales.order_items oi JOIN production.products p ON oi.product_id = p.product_id GROUP BY p.product_id, p.product_name ORDER BY total_quantity DESC;``` | - Surly Ice Cream Truck Frameset - 2016<br> - Electra Cruiser 1 (24-Inch) - 2016<br> - Electra Townie Original 7D EQ - 2016 |
