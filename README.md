@@ -35,10 +35,9 @@ A stack escolhida foi:
    - OpenAI SDK: biblioteca da OpenAI usada para interações com diversos LLMs.
 2. SQL Server: tipo de banco de dados SQL escolhido para guardar a dados da base de dados bikeStores.
 3. OpenRouter API: plataforma de APIs para interagir com diversos modelos gratuitos e pagos.
-4. DeepSeek R1 free: modelo LLM utilizado pelo sistema.
+4. "DeepSeek R1 free" e "Llama-3.1-8b-instruct:free": modelos LLM utilizados pelo sistema.
 
-
-Dessa forma, o sistema funcionará dessa forma:
+O sistema funcionará dessa forma:
 
 1. Back-end: Flask, OpenAI SDK e Dataset.
 2. Front-end: html e javascript.
@@ -86,9 +85,13 @@ Foram construídas duas classes principais: a Database, para conectar e executar
 
 A avaliação do sistema se baseou em testes do funcionamento completo do sistema, isto é, a inserção da pergunta pelo usuário, a geração das queries (podendo ser mais de uma) pelo modelo, a conexão com o banco e a execução dessas queries, e por fim, o recebimento pelo LLM da pergunta inicial e da resposta do banco, gerando a resposta final.
 
-O arquivo questions_and_answers.txt, contém os testes efetuados e as análises dos resultados. 
+O arquivo questions_and_answers_r1.txt e questions_and_answers_llama.txt contém os testes efetuados e as análises dos resultados para os modelos "DeepSeek R1 free" e "Llama-3.1-8b-instruct:free", respectivamente.
 
-Abaixo está uma tabela com entradas e saídas do modelo:
+A seguir o resultado e análise para cada um dos modelos testados e ao final da seção uma comparação entre eles.
+
+### DeepSeek R1 Free
+
+Abaixo está uma tabela com entradas e saídas para o modelo DeepSeek:
 
 | **Question** | **Generated SQL** | **Generated Answer** |
 |--------------|---------|------------|
@@ -104,12 +107,24 @@ Uma possível correção seria uma avaliação completa do modelo de todo o banc
 
 Uma solução para esse problema seria a geração de um prompt para explicar os detalhes da base e qualquer informações que vá ajudar o modelo a chegar na resposta correta.
 
+### Modelo Llama-3.1-8b-instruct:free
+
+| **Question** | **Generated SQL** | **Generated Answer** |
+|--------------|---------|------------|
+| **What are the top 3 products in stock quantity?** | ```SSELECT TOP 3 p.product_name, SUM(s.quantity) AS total_quantity FROM production.products p JOIN production.stocks s ON p.product_id = s.product_id GROUP BY p.product_name ORDER BY total_quantity DESC;``` | - Electra Townie Original 7D - 2017 with a total quantity of 125<br> - Electra Townie Balloon 8D EQ Ladies' - 2016/2017/2018 with a total quantity of 121<br> - Electra Townie Go! 8i - 2017/2018 with a total quantity of 120 |
+| **What are the top 3 products in sales quantity?** | ```SELECT TOP 3 p.product_name, SUM(oi.quantity) AS total_quantity FROM production.products p JOIN sales.order_items oi ON p.product_id = oi.product_id GROUP BY p.product_name ORDER BY total_quantity DESC;``` | - Electra Cruiser 1 (24-Inch) - 2016 with a total quantity of 296<br> - Electra Townie Original 7D EQ - 2016 with a total quantity of 290<br> - Electra Townie Original 21D - 2016 with a total quantity of 289 |
+| **What were the staffs with the highest number of sales in August of 2017 and what is the number of products that it sold at this month?** | ```SELECT TOP 1 s.staff_id, s.first_name, s.last_name, COUNT(oi.item_id) AS num_products_sold FROM sales.staffs s JOIN sales.orders o ON s.staff_id = o.staff_id JOIN sales.order_items oi ON o.order_id = oi.order_id WHERE YEAR(o.order_date) = 2017 AND MONTH(o.order_date) = 8 GROUP BY s.staff_id, s.first_name, s.last_name ORDER BY num_products_sold DESC;``` | The staff with the highest number of sales in August of 2017 is Venita Daniel with 61 products sold. |
+
+O modelo não sofreu com o mesmo problema que o DeepSeek, pois, para a segunda pergunta na tabela, usou para agrupar as quantidades vendidas, apenas a coluna contendo o nome do produto. Assim, diferentemente do DeepSeek, a resposta está correta.
+
+Apesar disso, o resultado apresentado para a terceira pergunta, foi incorreto. O modelo usou a coluna "item_id" para fazer a contagem, mas o certo seria considerar que na tabela order_items, podem existir uma quantidade específica vendida para um mesmo item e não apenas um único.
+
 ## Conclusão
 
-O sistema construído apresentou um excelente desempenho, surpreendendo na precisão das respostas fornecidas. Houve apenas uma resposta que causou dúvidas, devido ao fato da própria base de dados apresentar uma inconsistência, conforme o explicado na seção de resultados.
+O sistema construído apresentou um excelente desempenho, surpreendendo na precisão das respostas fornecidas. Ambos os modelos apresentaram erros de resposta, porém, o modelo "Deep Seek R1:free" apresentou os melhores resultados, pois seu uńico erro foi devido ao fato da própria base de dados apresentar uma inconsistência, conforme o explicado na seção de resultados.
 
 Adicionando, esse projeto utilizou uma base de dados com a tecnologia do SQL Server, porém, pode ser adaptado para outros dialetos SQL, como por exemplo, MySQL e Postgres. Além disso, vale mencionar, que o modelo tomou conhecimento das tabelas, campos e relacionamentos através de um prompt, ou seja, ao modelo foi fornecido um contexto e ele o utilizou para gerar as consultas em SQL. Base de dados muito grandes e complexas podem necessitar de outras técnicas e o RAG pode ser empregado para que não seja necessário previamente um processamento de tokens extenso, evitando romper o limite de contexto do modelo LLM utilizado.
 
-Um outro ponto importante fato a ser citado, é que a utilização do OpenRouter (plataforma que disponibiliza API para diversos modelos) permitiu a utilização de um modelo de ponta de forma gratuita, porém ao mesmo tempo, o tempo de resposta do modelo foi alto, podendo demorar mais de 1 minuto para gerar as respostas necessárias.
+Um outro ponto importante fato a ser citado, é que a utilização do OpenRouter (plataforma que disponibiliza API para diversos modelos) permitiu a utilização de modelos de ponta de forma gratuita, porém ao mesmo tempo, o tempo de resposta do modelo foi alto (DeepSeek), podendo demorar mais de 1 minuto para gerar as respostas necessárias.
 
 O projeto demonstra o poder dos LLMs, pois mesmo pessoas que não conhecem SQL podem extrair insights dos dados de um banco SQL, sem necessariamente precisar saber sobre essa linguagem de script.

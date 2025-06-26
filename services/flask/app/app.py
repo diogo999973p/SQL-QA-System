@@ -14,7 +14,8 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 USERNAME = 'sa'
 PASSWORD = 'SqlServer2019!'
 DATABASE = 'master'
-MODELNAME = 'deepseek/deepseek-r1:free'
+# MODELNAME = 'deepseek/deepseek-r1:free'
+MODELNAME = 'meta-llama/llama-3.1-8b-instruct:free'
 
 model_client = model.Model(MODELNAME)
 model_answers_parser = model.ModelAnswerParser()
