@@ -1,6 +1,6 @@
 # Sistema SQL de Perguntas e Respostas
 
-Esse repositório contém o código de um sistema de perguntas e respostas SQL, que se conecta a um banco de dados e responde perguntas de usuários sobre uma base dados relacional através do input em uma interface gráfica web.
+Esse repositório contém o código de um sistema de perguntas e respostas SQL, que se conecta a um banco de dados e responde perguntas de usuários sobre uma base relacional através do input em uma interface gráfica web.
 
 ![Interface 2](interface_grafica_2.png)
 
@@ -10,7 +10,7 @@ Aqui estão enunciados alguns detalhes do projeto.
 
 ### Objetivo
 
-Produzir um agente de IA que seja capaz de responder perguntas de funcionários de uma empresa com base em um banco de dados (Data Warehouse).​
+Produzir um agente de IA que seja capaz de responder perguntas de funcionários de uma empresa com base em um Data Warehouse.​
 
 ### Fluxo do Sistema de IA
 
@@ -28,14 +28,14 @@ Um fluxo pode ser visto na imagem:
 
 A stack escolhida foi:
 
-1. Python: linguagem de programação
+1. Python: linguagem de programação.
    - Flask: framework para geração do web server com interface gráfica para interação com o LLM.
    - Jupyter notebook: para testes diversos das funcionalidades do sistema.
-   - Dataset: biblioteca para conexão e execução de comandos no banco de dados
+   - Dataset: biblioteca para conexão e execução de comandos no banco de dados.
    - OpenAI SDK: biblioteca da OpenAI usada para interações com diversos LLMs.
 2. SQL Server: tipo de banco de dados SQL escolhido para guardar a dados da base de dados bikeStores.
 3. OpenRouter API: plataforma de APIs para interagir com diversos modelos gratuitos e pagos.
-4. "DeepSeek R1 free" e "Llama-3.1-8b-instruct:free": modelos LLM utilizados pelo sistema.
+4. "DeepSeek R1 free" e "Llama-3.1-8b-instruct:free": modelos LLM utilizados para testar o sistema.
 
 O sistema funcionará dessa forma:
 
@@ -52,7 +52,7 @@ Os serviços criados e suas utilizações foram:
 
 1. Jupyter: serviço usado para subir em localhost jupyter notebooks com as bibliotecas necessárias instaladas. Esse serviço foi utilizado apenas para testes.
 2. Sqlserver: serviço do banco de dados SQL Server em localhost.
-3. Mssqltools: serviço temporário para criação da base de dado no SQL Server.
+3. Mssqltools: serviço temporário para criação de tabelas e inserção de dados no banco de dados SQL Server.
 4. Flask: serviço principal que integra os sistemas anteriores. Possuindo uma interface gráfica e um servidor em localhost.
 
 ### Base de Dados
@@ -87,7 +87,7 @@ A avaliação do sistema se baseou em testes do funcionamento completo do sistem
 
 O arquivo questions_and_answers_r1.txt e questions_and_answers_llama.txt contém os testes efetuados e as análises dos resultados para os modelos "DeepSeek R1 free" e "Llama-3.1-8b-instruct:free", respectivamente.
 
-A seguir o resultado e análise para cada um dos modelos testados e ao final da seção uma comparação entre eles.
+A seguir o resultado e análise para cada um dos modelos testados.
 
 ### DeepSeek R1 Free
 
@@ -121,7 +121,7 @@ Apesar disso, o resultado apresentado para a terceira pergunta, foi incorreto. O
 
 ## Conclusão
 
-O sistema construído apresentou um excelente desempenho, surpreendendo na precisão das respostas fornecidas. Ambos os modelos apresentaram erros de resposta, porém, o modelo "Deep Seek R1:free" apresentou os melhores resultados, pois seu uńico erro foi devido ao fato da própria base de dados apresentar uma inconsistência, conforme o explicado na seção de resultados.
+O sistema construído apresentou um excelente desempenho, surpreendendo na precisão das respostas fornecidas. Ambos os modelos apresentaram erros de resposta, porém, o modelo "Deep Seek R1:free" apresentou os melhores resultados, pois seu único erro foi devido ao fato da própria base de dados apresentar uma inconsistência, conforme o explicado na seção de resultados.
 
 Adicionando, esse projeto utilizou uma base de dados com a tecnologia do SQL Server, porém, pode ser adaptado para outros dialetos SQL, como por exemplo, MySQL e Postgres. Além disso, vale mencionar, que o modelo tomou conhecimento das tabelas, campos e relacionamentos através de um prompt, ou seja, ao modelo foi fornecido um contexto e ele o utilizou para gerar as consultas em SQL. Base de dados muito grandes e complexas podem necessitar de outras técnicas e o RAG pode ser empregado para que não seja necessário previamente um processamento de tokens extenso, evitando romper o limite de contexto do modelo LLM utilizado.
 
