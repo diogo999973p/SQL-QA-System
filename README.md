@@ -117,7 +117,7 @@ Uma solução para esse problema seria a geração de um prompt para explicar os
 
 O modelo não sofreu com o mesmo problema que o DeepSeek, pois, para a segunda pergunta na tabela, usou para agrupar as quantidades vendidas, apenas a coluna contendo o nome do produto. Assim, diferentemente do DeepSeek, a resposta está correta.
 
-Apesar disso, o resultado apresentado para a terceira pergunta, foi incorreto. O modelo usou a coluna "item_id" para fazer a contagem, mas o certo seria considerar que na tabela order_items, podem existir uma quantidade específica vendida para um mesmo item e não apenas um único.
+Apesar disso, o resultado apresentado para a terceira pergunta, foi incorreto. O modelo usou a coluna "item_id" para fazer a contagem, mas o certo seria considerar que na tabela "order_items", podem existir uma quantidade específica vendida para um mesmo item e não apenas um único.
 
 ## Conclusão
 
