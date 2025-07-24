@@ -29,7 +29,7 @@ Criar um sistema de IA que seja capaz de responder perguntas de funcionários de
 
 O sistema deve ser capaz de receber uma pergunta do usuário e identificar através dos detalhes de uma base de dados, quais tabelas e colunas são necessárias para respondê-la. 
 
-O modelo saberá assim gerar uma query SQL, que deve ser executada no banco de dados, retornando a informação desejada.
+O modelo poderá assim gerar uma query SQL, que deve ser executada no banco de dados, retornando a informação desejada.
 
 No último passo o modelo irá, a partir da pergunta inicial e do retorno do resultando da consulta ao banco, gerar a resposta final para a pergunta do usuário.
 
@@ -76,7 +76,7 @@ Na seguinte imagem é possível ver as tabelas presentes nesse banco de dados:
 
 ![Banco](database.png)
 
-Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criado um prompt que está localizado no arquivo services/flas/app/model.py.
+Para que o modelo pudesse saber detalhes da configuração do banco de dados, foi criado um prompt que está localizado no arquivo services/flask/app/model.py.
 
 ## Interface Gráfica
 
