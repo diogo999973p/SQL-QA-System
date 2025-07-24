@@ -1,16 +1,29 @@
 # Sistema SQL de Perguntas e Respostas
 
-Esse repositório contém o código de um sistema de perguntas e respostas SQL, que se conecta a um banco de dados e responde perguntas de usuários sobre uma base relacional através do input em uma interface gráfica web.
+#### Aluno: [Diogo Gomes Brandão](https://github.com/diogo999973p)
+#### Orientadora: [Evelyn Conceição Santos Batista](https://github.com/evysb)
+
+---
+
+Trabalho apresentado ao curso [BI MASTER](https://ica.ele.puc-rio.br/cursos/mba-bi-master) como pré-requisito para a conclusão de curso.
+
+## Resumo
+
+Esse repositório contém o código de um sistema de perguntas e respostas SQL baseado em modelos de processamento de linguagem natural, que se conecta a um banco de dados e responde perguntas de usuários sobre uma base relacional através do input em uma interface gráfica web.
 
 ![Interface 2](interface_grafica_2.png)
 
+## Introdução
+
+Modelos de inteligência artificial (IA) para processamento de linguagem natural têm sido utilizados em diversas aplicações, e este trabalho tem como objetivo exemplificar uma delas. Neste caso, aplicaremos a ideia de que, com esses modelos, é possível extrair informações de um banco de dados relacional sem a necessidade de utilizar a linguagem SQL (Structured Query Language). Ou seja, o próprio modelo é capaz de gerar o comando necessário, interpretar a resposta e apresentar uma saída adequada com base nos dados desse banco.
+
 ## Projeto
 
-Aqui estão enunciados alguns detalhes do projeto.
+Aqui estão enunciados os detalhes do projeto.
 
 ### Objetivo
 
-Produzir um agente de IA que seja capaz de responder perguntas de funcionários de uma empresa com base em um Data Warehouse.​
+Criar um sistema de IA que seja capaz de responder perguntas de funcionários de uma empresa com base em um Data Warehouse.​
 
 ### Fluxo do Sistema de IA
 
@@ -128,3 +141,11 @@ Adicionando, esse projeto utilizou uma base de dados com a tecnologia do SQL Ser
 Um outro ponto importante fato a ser citado, é que a utilização do OpenRouter (plataforma que disponibiliza API para diversos modelos) permitiu a utilização de modelos de ponta de forma gratuita, porém ao mesmo tempo, o tempo de resposta do modelo foi alto (DeepSeek), podendo demorar mais de 1 minuto para gerar as respostas necessárias.
 
 O projeto demonstra o poder dos LLMs, pois mesmo pessoas que não conhecem SQL podem extrair insights dos dados de um banco SQL, sem necessariamente precisar saber sobre essa linguagem de script.
+
+---
+
+Matrícula: 231100101
+
+Pontifícia Universidade Católica do Rio de Janeiro
+
+Curso de Pós Graduação *Business Intelligence Master*
